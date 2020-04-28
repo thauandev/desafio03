@@ -20,7 +20,14 @@ function App() {
   }
 
   async function handleRemoveRepository(id) {
-    // TODO
+    await api.delete(`repositories/${id}`)
+     /** Adiciona na variavel a busca referente ao state de repositories
+      * A busca filtra os repositórios que não tem id igual ao id do repositório removido
+     */
+    const newRepositories = repositories.filter(repositorie => repositorie.id !== id);
+     /** Atualiza a lista de reposítorios com os que não foram removidos */
+    setRepositories(newRepositories);
+    
   }
   
  useEffect(()=>{
@@ -32,10 +39,10 @@ function App() {
   return (
     <div>
       <ul data-testid="repository-list">
-        {repositories.map(repositorie => <li>
+        {repositories.map(repositorie => <li key={repositorie.id}>
           {repositorie.title}
 
-          <button onClick={() => handleRemoveRepository(1)}>
+          <button onClick={() => handleRemoveRepository(repositorie.id)}>
             Remover
           </button>
         </li>)}
